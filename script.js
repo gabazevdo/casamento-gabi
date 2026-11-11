@@ -190,7 +190,7 @@ function openGallery(album) {
     currentAlbumPhotosList = album.photos;
     currentFolder = album.folder;
     
-    title.textContent = `${album.title} — ${album.photos.length} fotos`;
+    title.textContent = `${album.title}`;
     photoGrid.innerHTML = ''; 
     
     album.photos.forEach((fileName, index) => {
