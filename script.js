@@ -282,4 +282,40 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ==========================================
+// SUPORTE PARA ARRASTO (SWIPE) NO CELULAR
+// ==========================================
+let touchStartX = 0;
+let touchEndX = 0;
+
+const viewer = document.getElementById('photoViewer');
+
+// Quando o usuário toca o dedo na tela
+viewer.addEventListener('touchstart', e => {
+    touchStartX = e.changedTouches[0].clientX;
+});
+
+// Quando o usuário solta o dedo da tela
+viewer.addEventListener('touchend', e => {
+    touchEndX = e.changedTouches[0].clientX;
+    handleSwipe();
+});
+
+// Calcula a direção do movimento
+function handleSwipe() {
+    // Se o visualizador não estiver aberto, não faz nada
+    if (viewer.style.display !== 'flex') return;
+
+    const swipeDistance = touchStartX - touchEndX;
+    const minSwipeDistance = 50; // Distância mínima para validar o arrasto
+
+    if (swipeDistance > minSwipeDistance) {
+        // Arrastou para a esquerda (Próxima foto)
+        changePhoto(1);
+    } else if (swipeDistance < -minSwipeDistance) {
+        // Arrastou para a direita (Foto anterior)
+        changePhoto(-1);
+    }
+}
+
 document.addEventListener('DOMContentLoaded', renderAlbums);
