@@ -154,9 +154,13 @@ photos: [
     }
 ];
 
-let currentPhotoUrl = '';
 
-// 2. Renderiza os cards na página inicial
+// Variáveis de controle de estado
+let currentPhotoUrl = '';
+let currentAlbumPhotosList = [];
+let currentFolder = '';
+let currentPhotoIndex = 0;
+
 function renderAlbums() {
     const grid = document.getElementById('albumGrid');
     if (!grid) return;
@@ -177,25 +181,27 @@ function renderAlbums() {
     });
 }
 
-// 3. Abre a Galeria e exibe as fotos baseadas na lista informada
 function openGallery(album) {
     const modal = document.getElementById('galleryModal');
     const title = document.getElementById('modalTitle');
     const photoGrid = document.getElementById('photoGrid');
     
-    title.textContent = `${album.title}`;
+    // Salva o contexto do álbum atual para a navegação
+    currentAlbumPhotosList = album.photos;
+    currentFolder = album.folder;
+    
+    title.textContent = `${album.title} — ${album.photos.length} fotos`;
     photoGrid.innerHTML = ''; 
     
-    // Percorre a lista de nomes e cria as imagens
-    album.photos.forEach(fileName => {
+    album.photos.forEach((fileName, index) => {
         const imgUrl = `${album.folder}${fileName}`;
-        
         const imgElement = document.createElement('img');
-        imgElement.src = imgUrl;
-        imgElement.loading = 'lazy'; // Carregamento sob demanda para não travar a página
         
-        // Ao clicar, abre o visualizador individual
-        imgElement.onclick = () => openPhotoViewer(imgUrl, fileName);
+        imgElement.src = imgUrl;
+        imgElement.loading = 'lazy';
+        
+        // Passa o ÍNDICE da foto em vez da URL diretamente
+        imgElement.onclick = () => openPhotoViewer(index);
         
         photoGrid.appendChild(imgElement);
     });
@@ -204,38 +210,54 @@ function openGallery(album) {
     document.body.style.overflow = 'hidden'; 
 }
 
-// 4. Fecha a Galeria
 function closeGallery() {
     document.getElementById('galleryModal').style.display = 'none';
     document.body.style.overflow = 'auto';
 }
 
-// 5. Visualizador de Foto Única (com botão de Download)
-function openPhotoViewer(imgUrl, fileName) {
+// Agora recebe o índice numérico da foto na lista
+function openPhotoViewer(index) {
     const viewer = document.getElementById('photoViewer');
     const viewerImage = document.getElementById('viewerImage');
     const downloadBtn = document.getElementById('downloadBtn');
     
+    currentPhotoIndex = index;
+    const fileName = currentAlbumPhotosList[currentPhotoIndex];
+    const imgUrl = `${currentFolder}${fileName}`;
+    
     currentPhotoUrl = imgUrl;
     viewerImage.src = imgUrl;
     
-    // Configura o link de download com o caminho da imagem e o nome original
     downloadBtn.href = imgUrl;
     downloadBtn.download = fileName; 
     
     viewer.style.display = 'flex';
 }
 
-// 6. Fecha o Visualizador Único
+// Nova função para navegar entre as fotos
+function changePhoto(direction) {
+    currentPhotoIndex += direction;
+    
+    // Se passar da última foto, volta para a primeira (Loop)
+    if (currentPhotoIndex >= currentAlbumPhotosList.length) {
+        currentPhotoIndex = 0;
+    } 
+    // Se voltar antes da primeira, vai para a última (Loop)
+    else if (currentPhotoIndex < 0) {
+        currentPhotoIndex = currentAlbumPhotosList.length - 1;
+    }
+    
+    // Abre a nova foto atualizada
+    openPhotoViewer(currentPhotoIndex);
+}
+
 function closeViewer() {
     document.getElementById('photoViewer').style.display = 'none';
 }
 
-// 7. Botão de Compartilhar
 async function sharePhoto() {
     if (navigator.share) {
         try {
-            // Compartilha o link da página atual (útil para GitHub Pages)
             const url = window.location.href;
             await navigator.share({
                 title: 'Nossas Fotos',
@@ -250,5 +272,14 @@ async function sharePhoto() {
     }
 }
 
-// Inicia a aplicação
+// Suporte a teclado para navegação no computador
+document.addEventListener('keydown', (e) => {
+    const viewer = document.getElementById('photoViewer');
+    if (viewer.style.display === 'flex') {
+        if (e.key === 'ArrowRight') changePhoto(1);
+        if (e.key === 'ArrowLeft') changePhoto(-1);
+        if (e.key === 'Escape') closeViewer();
+    }
+});
+
 document.addEventListener('DOMContentLoaded', renderAlbums);

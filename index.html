@@ -38,7 +38,7 @@
         </div>
     </div>
 
-    <!-- Visualizador de Foto Única Expandida -->
+<!-- Visualizador de Foto Única Expandida -->
     <div id="photoViewer" class="viewer">
         <div class="viewer-toolbar">
             <button onclick="closeViewer()"><span class="material-icons">arrow_back</span></button>
@@ -47,6 +47,11 @@
                 <a id="downloadBtn" href="#" download><span class="material-icons">download</span></a>
             </div>
         </div>
+        
+        <!-- ADICIONE ESTAS DUAS LINHAS -->
+        <button class="nav-btn prev-btn" onclick="changePhoto(-1)"><span class="material-icons">chevron_left</span></button>
+        <button class="nav-btn next-btn" onclick="changePhoto(1)"><span class="material-icons">chevron_right</span></button>
+        
         <img id="viewerImage" src="" alt="Foto expandida">
     </div>
 
