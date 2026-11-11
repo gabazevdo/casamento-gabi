@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossos Momentos</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Ícones para os botões -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Gabrielly & Gabriel</h1>
+            <p>Casamento Civíl</p>
+            <a href="#albums" class="btn-primary">Ver Álbuns</a>
+        </div>
+    </section>
+
+    <!-- Seção de Álbuns -->
+    <section id="albums" class="albums-section">
+        <h2>Fotos</h2>
+        <div class="album-grid" id="albumGrid">
+            <!-- Os cards serão injetados aqui pelo JavaScript -->
+        </div>
+    </section>
+
+    <!-- Lightbox / Galeria Modal -->
+    <div id="galleryModal" class="modal">
+        <button class="close-btn" onclick="closeGallery()"><span class="material-icons">close</span></button>
+        <div class="modal-content">
+            <h3 id="modalTitle">Título do Álbum</h3>
+            <div class="photo-grid" id="photoGrid">
+                <!-- As fotos do álbum selecionado aparecerão aqui -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Visualizador de Foto Única Expandida -->
+    <div id="photoViewer" class="viewer">
+        <div class="viewer-toolbar">
+            <button onclick="closeViewer()"><span class="material-icons">arrow_back</span></button>
+            <div class="actions">
+                <button onclick="sharePhoto()"><span class="material-icons">share</span></button>
+                <a id="downloadBtn" href="#" download><span class="material-icons">download</span></a>
+            </div>
+        </div>
+        <img id="viewerImage" src="" alt="Foto expandida">
+    </div>
+
+    <!-- Seção de Vídeos -->
+    <section id="videos" class="videos-section">
+        <h2>Nossos Vídeos</h2>
+        <div class="video-container">
+            <!-- Substitua o ID do vídeo do YouTube abaixo -->
+            <iframe src="https://www.youtube.com/embed/ScMzIvxBSi4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>Fale Conosco</h3>
+            <p>Email: contato@casal.com | WhatsApp: (11) 99999-9999</p>
+            <p>&copy; 2026 João & Maria. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
